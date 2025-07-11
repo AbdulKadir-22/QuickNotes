@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import './App.css' 
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -63,54 +64,50 @@ function App() {
   };
 
   return (
-    <div style={{ maxWidth: "700px", margin: "30px auto", fontFamily: "sans-serif" }}>
-      <h1>📝 <strong>QuickNotes</strong></h1>
+    <div className="app-container">
+      <h1 className="heading">📝 <strong>QuickNotes</strong></h1>
 
       <input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        className="input"
       />
 
       <textarea
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        rows={4}
-        style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        rows={6}
+        className="textarea"
       />
 
-      <button onClick={handleSubmit}>
-        {editId ? "Update Note" : "Add Note"}
-      </button>
-
-      {editId && (
-        <button onClick={resetForm} style={{ marginLeft: "10px" }}>
-          Cancel Edit
+      <div className="button-group">
+        <button className="btn primary" onClick={handleSubmit}>
+          {editId ? "Update Note" : "Add Note"}
         </button>
-      )}
+        {editId && (
+          <button className="btn" onClick={resetForm}>
+            Cancel
+          </button>
+        )}
+      </div>
 
-      <hr style={{ margin: "20px 0" }} />
+      <hr className="divider" />
 
       {notes.map(note => (
-        <div key={note._id} style={{
-          border: "1px solid #ccc",
-          padding: "15px",
-          borderRadius: "8px",
-          marginBottom: "15px",
-          backgroundColor: editId === note._id ? "#f9f9f9" : "white"
-        }}>
+        <div key={note._id} className={`note-card ${editId === note._id ? "editing" : ""}`}>
           <h3>{note.title}</h3>
           <p>{note.content}</p>
-          <button onClick={() => deleteNote(note._id)}>Delete</button>
-          <button onClick={() => editNote(note)} style={{ marginLeft: "10px" }}>
-            Edit
-          </button>
+          <div className="button-group">
+            <button className="btn danger" onClick={() => deleteNote(note._id)}>Delete</button>
+            <button className="btn" onClick={() => editNote(note)}>Edit</button>
+          </div>
         </div>
       ))}
     </div>
+
   );
 }
 
